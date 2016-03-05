@@ -1,0 +1,10 @@
+## YAML Template.
+server:
+ port: 8081
+ host: 127.0.0.1
+apps:
+ -
+   app_file: config.json
+   name: "Example"
+   url_path: "/"
+   type: "rest"
