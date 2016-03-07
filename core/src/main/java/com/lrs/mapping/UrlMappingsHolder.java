@@ -30,11 +30,6 @@ public class UrlMappingsHolder {
 
     private static final transient Log LOG = LogFactory.getLog(UrlMappingsHolder.class);
 
-    /*private final LinkedHashMap<String, UrlMapping> urlMappings = new LinkedHashMap<String, UrlMapping>();
-    private final LinkedHashMap<String, UrlMapping> litteralMappings = new LinkedHashMap<String, UrlMapping>();
-    private final LinkedHashMap<Pattern, UrlMapping> compiledMapping = new LinkedHashMap<Pattern, UrlMapping>();
-*/
-    //@Inject private ApplicationContext applicationContext;
     private MethodlessRouter<UrlMapping> router = new MethodlessRouter<UrlMapping> ();
 
     
@@ -47,11 +42,7 @@ public class UrlMappingsHolder {
         }
         return this;
     }
-    
-    /*UrlMappingsHolder add(String pattern, String controller, Map<HttpString, String> actions) {
-        this.urlMappings.put(pattern, new DefaultUrlMapping(pattern, controller, actions));
-        return this;
-    }*/
+
 
     @PostConstruct
     public void init () {
@@ -67,31 +58,12 @@ public class UrlMappingsHolder {
             });
             LOG.debug("End Mapping from -> " + factory.getClass().getName() );
         });
-        
-        buildRegEx();
+
         LOG.debug("All mapping were added!");
     }
     
-    public void buildRegEx() {
-        /*urlMappings.keySet().stream().forEach((sRegEx) -> {
-            try {
-                Pattern pattern = Pattern.compile(sRegEx);
-                UrlMapping r = urlMappings.get(sRegEx);
-                compiledMapping.put(pattern, r);
-                
-            } catch (Exception e) {
-                litteralMappings.put(sRegEx, urlMappings.get(sRegEx));
-            }
-        });*/
-    }
-    
+
     public UrlMapping urlMapping(String uri) {
-        /*for (Pattern pattern : compiledMapping.keySet()) {
-            if(pattern.matcher(uri).matches()){
-                return compiledMapping.get(pattern);
-            }
-        }
-        return null;*/
         Routed<UrlMapping> routed = router.route(uri);
         if (routed != null) {
             UrlMapping mapping = routed.target();
@@ -100,7 +72,6 @@ public class UrlMappingsHolder {
         }
 
         return null;
-
     }
     
 

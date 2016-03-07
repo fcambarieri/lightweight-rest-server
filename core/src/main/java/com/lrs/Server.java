@@ -20,12 +20,9 @@ import io.undertow.servlet.api.DeploymentInfo;
 import io.undertow.servlet.api.DeploymentManager;
 import io.undertow.servlet.api.ListenerInfo;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,6 +41,9 @@ public class Server {
     private ServerConfig config;
     private List<Application> applications;
 
+    /**
+     * @param args
+     * */
     public static void main(String[] args) {
         Server server = new Server(args);
         try {
@@ -55,10 +55,18 @@ public class Server {
     }
 
 
+    /**
+     * @param args
+     * @see this#main(String[])
+     * */
     public Server(String[] args) {
         initialize(args);
     }
 
+    /**
+     * @param args
+     * @see this#main(String[])
+     * */
     public void initialize(String[] args) {
         Options options = new Options(args);
         config = createConfig(options);

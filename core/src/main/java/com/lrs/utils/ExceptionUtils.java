@@ -2,6 +2,7 @@ package com.lrs.utils;
 
 /**
  * Created by fcambarieri on 27/02/16.
+ * @author fcambarieri
  */
 public class ExceptionUtils {
 

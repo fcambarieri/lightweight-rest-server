@@ -1,0 +1,109 @@
+// Apply plugins
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'eclipse'
+apply plugin: 'maven'
+apply plugin: 'signing'
+apply plugin: 'application'
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+repositories {
+	mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile 'io.undertow:undertow-core:1.2.11.Final'
+    compile 'io.undertow:undertow-servlet:1.2.11.Final'
+    compile "org.jboss.weld.servlet:weld-servlet-core:2.3.3.Final"
+    compile "org.jboss.weld.se:weld-se:2.3.3.Final"
+    compile "io.fastjson:boon:0.28"
+    compile "org.yaml:snakeyaml:1.8"
+    compile "javax:javaee-api:7.0"
+    compile "commons-logging:commons-logging:1.2"
+}
+
+
+//distsDir = "build/dist"
+
+mainClassName = 'com.lrs.Server'
+
+
+jar {
+	baseName = 'LightWeightRestServer'
+    version =  '0.1.0'
+    manifest {
+        attributes	'Main-Class': mainClassName,
+        			'Created-By' :"${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})",
+        			'Build-Time': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+        			'Built-By': System.getProperty('user.name'),
+        			'Provider': 'gradle',
+        			'Enviroment' : "prod",
+        			'Implementation-Version': version,
+        			'Class-Path': configurations.compile.collect { "libs/${it.getName()}" }.sort().join(' ')
+        			
+    }
+}
+
+//Create lib directory with all dependecies
+task copyLibs(type: Copy) {
+  destinationDir = new File('dist/libs')
+  from configurations.runtime
+}
+
+//Copy project configuration
+task copyConf(type: Copy) {
+  destinationDir = new File('dist/config')
+  from "src/main/resources/config"
+  from "src/main/resources/log4j.properties"
+}
+
+//Copy file server
+task copyServer(type: Copy) {
+  destinationDir = new File('dist')
+  from "build/libs"
+}
+
+//create java doc
+task javadocJar(type: Jar) {
+    classifier = 'javadoc'
+    from javadoc
+}
+
+task myZip(type: Zip) {
+    from 'dist'
+    baseName = 'lrs-core'
+} 
+
+build.dependsOn(copyLibs)
+build.dependsOn(copyConf)
+build.dependsOn(copyServer)
+build.dependsOn(myZip)
+
+
+//ALL IN ONE
+task fatJar(type: Jar) {
+  version =  '0.1.0'
+  manifest {
+         attributes 'Main-Class': mainClassName,
+              'Created-By' :"${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})",
+              'Build-Time': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+              'Built-By': System.getProperty('user.name'),
+              'Provider': 'gradle',
+              'Enviroment' : "prod",
+              'Implementation-Version': version
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+
+//##### TESTING #####
+test {
+    systemProperties 'lrs.env': 'test'
+}

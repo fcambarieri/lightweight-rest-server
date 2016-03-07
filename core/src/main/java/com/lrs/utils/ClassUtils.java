@@ -1203,7 +1203,6 @@ public abstract class ClassUtils {
     /**
      * Check whether the given object is a CGLIB proxy.
      * @param object the object to check
-     * @see org.springframework.aop.support.AopUtils#isCglibProxy(Object)
      */
     public static boolean isCglibProxy(Object object) {
         return isCglibProxyClass(object.getClass());

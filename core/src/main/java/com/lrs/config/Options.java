@@ -5,6 +5,8 @@
  */
 package com.lrs.config;
 
+import com.lrs.enviroment.Environment;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +20,9 @@ public class Options {
 
   public enum Key {
     ROOT_PATH(new String[]{"-r", "-root_path"}, "config"),
-    CONFIG_FILE(new String[]{"-c", "-config_file"}, "server_config.yml"),;
+    CONFIG_FILE(new String[]{"-c", "-config_file"}, "server_config.yml"),
+    ENVIRONMENT (new String[]{"-lrs.env"}, null);
+
 
     private String[] optionAliases;
     private List<String> aliases;

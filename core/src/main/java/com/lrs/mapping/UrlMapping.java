@@ -31,8 +31,14 @@ public interface UrlMapping {
     Map<HttpString, String> getActions();
 
 
+    /**
+     * @return params from queryString and uri pattern
+     * */
     Map getParamas();
 
+    /**
+     * @param params from queryString and uri pattern
+     * */
     void setParams(Map params);
 
 

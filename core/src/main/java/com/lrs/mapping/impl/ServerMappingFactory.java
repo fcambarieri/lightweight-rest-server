@@ -5,9 +5,7 @@
  */
 package com.lrs.mapping.impl;
 
-import com.lrs.mapping.DefaultUrlMapping;
-import com.lrs.mapping.UrlMapping;
-import com.lrs.mapping.UrlMappingFactory;
+import com.lrs.mapping.*;
 import io.undertow.util.Methods;
 
 import java.util.Arrays;
@@ -19,9 +17,14 @@ import javax.inject.Named;
  * @author fcambarieri
  */
 @Named
-public class ServerMappingFactory implements UrlMappingFactory {
-
+public class ServerMappingFactory extends AbstractMappingFactory/*implements UrlMappingFactory*/ {
     @Override
+    protected void defineMapping() {
+        GET("/ping", new Mapping("ping", "renderPong"));
+        GET("/ping2", new Mapping("ping", "pong"));
+    }
+
+   /* @Override
     public List<UrlMapping> createMapping() {
         DefaultUrlMapping ping = DefaultUrlMapping.build()
                 .addPattern("/ping")
@@ -34,6 +37,6 @@ public class ServerMappingFactory implements UrlMappingFactory {
                 .addAction(Methods.GET, "pong");
         
         return Arrays.asList(new DefaultUrlMapping[]{ ping, ping2 });
-    }
+    }*/
     
 }
